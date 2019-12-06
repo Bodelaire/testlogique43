@@ -1,6 +1,6 @@
 <template>
     <section :id="indice"  class="ground">
-         <img class="image is-64x64" :class="'turn'+flecheMove" v-if="indice==positionfleche.X +'.'+positionfleche.Y" src="..\assets\image\1.png" alt="">
+         <img class="image is-64x64" :class="'turn'+getPosArrow.degre" v-if="indice==getPosArrow.axeX +'.'+getPosArrow.axeY" src="..\assets\image\1.png" alt="">
     </section>
 
     
@@ -8,26 +8,16 @@
 </template>
 
 <script>
-import {gameData} from '../store'
+import { mapGetters } from 'vuex'
 export default {
   name: 'HelloWorld',
   props: {
     indice: String
   },
-  data () {
-    return {
-       positionfleche: {
-         X: gameData.state.axeX,
-         Y: gameData.state.axeY
-       }
-    }
-   
-  },
   computed: {
-    flecheMove () {
-      alert("voyons"+ gameData.state.degre)
-      return gameData.state.degre
-    }
+    ...mapGetters([
+      'getPosArrow'
+    ])
   }
 }
 </script>
@@ -77,9 +67,6 @@ img {
 }
 .turn-90 {
   transform: rotate(-90deg);
-}
-.turn-180 {
-  transform: rotate(-180deg);
 }
 .turn180 {
   transform: rotate(180deg);

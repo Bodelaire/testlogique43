@@ -16,22 +16,55 @@
 
 <script>
 import HelloWorld from './components/HelloWorld.vue'
-import {gameData} from './store'
+import {  mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'app',
   components: {
     HelloWorld
   },
+  computed: {
+    ...mapGetters([
+      'getPosArrow'
+    ]) 
+  },
   methods: {
+    ...mapActions([
+      'updatePosArrow',
+    ]),
     sensFleche (deg) {
-      
-      gameData.setDegre(deg)
-      alert( gameData.getDegre())
+      this.$posarrow = this.getPosArrow
+      this.$posarrow.degre+=deg
+      if ( this.$posarrow.degre == -180)
+       {
+           this.$posarrow.degre = 180;
+       }
+       else if (this.$posarrow.degre == 270) {
+          this.$posarrow.degre = -90;
+       }
+       this.updatePosArrow(this.$posarrow) 
     },
     avance () {
-      gameData.moveOn()
-      alert(gameData.state)
+     
+      this.$posarrow = this.getPosArrow
+      if(this.$posarrow.degre == 0)
+      {
+        this.$posarrow.axeY++
+      }
+      else if (this.$posarrow.degre == 90)
+      {
+          this.$posarrow.axeX++
+      }
+      else if (this.$posarrow.degre == 180)
+      {
+          this.$posarrow.axeY--
+      }
+      else if (this.$posarrow.degre == -90)
+      {
+          this.$posarrow.axeX--
+      }
+     this.updatePosArrow(this.$posarrow)
+     
     }
   }
 }
